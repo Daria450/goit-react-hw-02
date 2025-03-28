@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Description from "./components/Description/Description"
 import Feedback from "./components/Feedback/Feedback"
 import Options from "./components/Options/Options";
@@ -9,11 +9,14 @@ import './App.css';
 
 
 function App() {
-  const [mark, setMarkData] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+
+  const [mark, setMarkData] = useState(() => {
+    const savedMark = localStorage.getItem("mark");
+    return savedMark ? JSON.parse(savedMark) : { good: 0, neutral: 0, bad: 0 };
   });
+  useEffect(() => {
+    localStorage.setItem("mark", JSON.stringify(mark));
+  }, [mark])
 
   const updateFeedback = feedbackType => {
     // Тут використовуй сеттер, щоб оновити стан
@@ -33,6 +36,11 @@ function App() {
   const totalFeedback = mark.good + mark.neutral + mark.bad;
 
   const positiveFeedback = Math.round((mark.good / totalFeedback) * 100);
+
+
+
+
+
 
   return (
     <>
