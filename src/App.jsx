@@ -14,6 +14,7 @@ function App() {
     const savedMark = localStorage.getItem("mark");
     return savedMark ? JSON.parse(savedMark) : { good: 0, neutral: 0, bad: 0 };
   });
+
   useEffect(() => {
     localStorage.setItem("mark", JSON.stringify(mark));
   }, [mark])
@@ -38,15 +39,11 @@ function App() {
   const positiveFeedback = Math.round((mark.good / totalFeedback) * 100);
 
 
-
-
-
-
   return (
     <>
       <Description />
       <Options hadleClick={updateFeedback} handleReset={resetFeedback} total={totalFeedback} />
-      <Feedback markData={mark} total={totalFeedback} positive={positiveFeedback} />
+      {totalFeedback > 0 ? <Feedback markData={mark} total={totalFeedback} positive={positiveFeedback} /> : <Notification />}
     </>
   )
 }
